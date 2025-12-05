@@ -104,7 +104,9 @@ class RecorderWrapper(
   fun stopRecordingSync() {
     try {
       recorder?.stop(null)
-    } catch (_: Exception) {
+    } catch (e: Exception) {
+      // Log error but don't rethrow - we're in lifecycle callback and must not crash
+      android.util.Log.e("RecorderWrapper", "Error stopping recording on background: ${e.message}", e)
     } finally {
       stopService()
     }
