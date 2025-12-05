@@ -28,6 +28,19 @@ class MethodCallHandlerImpl(
     recorders.clear()
   }
 
+  /**
+   * Stops all active recordings to ensure data is saved to disk.
+   * Called when app goes to background to prevent data loss.
+   */
+  fun stopAllRecordings() {
+    for (entry in recorders.entries) {
+      val recorder = entry.value
+      if (recorder.isCurrentlyRecording()) {
+        recorder.stopRecordingSync()
+      }
+    }
+  }
+
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
     val recorderId = call.argument<String>("recorderId")
 
