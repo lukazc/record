@@ -26,26 +26,11 @@ public class RecordIosPlugin: NSObject, FlutterPlugin {
   }
 
   public func applicationWillTerminate(_ application: UIApplication) {
-    stopAllRecordings()
-  }
-
-  public func applicationDidEnterBackground(_ application: UIApplication) {
-    // When app enters background (including being swiped away), stop all recordings
-    // to ensure data is flushed to disk and not corrupted
-    stopAllRecordings()
+    dispose()
   }
 
   public func detachFromEngine(for registrar: FlutterPluginRegistrar) {
     dispose()
-  }
-  
-  // Stops all active recordings to ensure data is saved to disk
-  private func stopAllRecordings() {
-    for (_, recorder) in m_recorders {
-      if recorder.isRecording() {
-        recorder.stop(completionHandler: {(path) -> () in })
-      }
-    }
   }
 
   func dispose() {

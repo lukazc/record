@@ -88,29 +88,6 @@ class RecorderWrapper(
   fun isRecording(result: MethodChannel.Result) {
     result.success(recorder?.isRecording ?: false)
   }
-  
-  /**
-   * Returns true if there's an active recording in progress.
-   * Used for lifecycle-aware stopping of recordings.
-   */
-  fun isCurrentlyRecording(): Boolean {
-    return recorder?.isRecording ?: false
-  }
-  
-  /**
-   * Stops recording synchronously to ensure data is saved.
-   * Called when app goes to background.
-   */
-  fun stopRecordingSync() {
-    try {
-      recorder?.stop(null)
-    } catch (e: Exception) {
-      // Log error but don't rethrow - we're in lifecycle callback and must not crash
-      android.util.Log.e("RecorderWrapper", "Error stopping recording on background: ${e.message}", e)
-    } finally {
-      stopService()
-    }
-  }
 
   fun getAmplitude(result: MethodChannel.Result) {
     if (recorder != null) {
