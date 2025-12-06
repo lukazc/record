@@ -107,7 +107,11 @@ class RecordConfig(
 
       val serviceMap = map?.get("service") as Map<*, *>?
       val service = if (serviceMap != null) {
-        AndroidService(serviceMap["title"] as String, serviceMap["content"] as String?)
+        AndroidService(
+          serviceMap["title"] as String,
+          serviceMap["content"] as String?,
+          Utils.firstNonNull(serviceMap["openAppOnTap"] as Boolean?, true)
+        )
       } else {
         null
       }
@@ -142,6 +146,7 @@ class RecordConfig(
 class AndroidService(
   val title: String,
   val content: String?,
+  val openAppOnTap: Boolean = true,
 )
 
 enum class AudioEncoder(val value: String) {

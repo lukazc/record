@@ -55,6 +55,19 @@ class _RecorderState extends State<Recorder> with AudioRecorderMixin {
 
         const config = RecordConfig(encoder: encoder, numChannels: 1);
 
+        // For background recording with notification that opens app on tap:
+        // const config = RecordConfig(
+        //   encoder: AudioEncoder.aacLc,
+        //   numChannels: 1,
+        //   androidConfig: AndroidRecordConfig(
+        //     service: AndroidService(
+        //       title: 'Recording Audio',
+        //       content: 'Tap to return to app',
+        //       openAppOnTap: true, // Default is true, set false to disable tap action
+        //     ),
+        //   ),
+        // );
+
         // Record to file
         await recordFile(_audioRecorder, config);
 

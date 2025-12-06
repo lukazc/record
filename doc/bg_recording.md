@@ -29,6 +29,20 @@ RecordConfig(
 
 A notification is added (with low importance) to conform to Android requirements if service is started.
 
+By default, tapping the notification will bring the app to the foreground. You can disable this behavior:
+```dart
+RecordConfig(
+  ...,
+  androidConfig: AndroidRecordConfig(
+    service: AndroidService(
+      title: 'Title',
+      content: 'Content...',
+      openAppOnTap: false, // Disable opening app on notification tap
+    )
+  )
+);
+```
+
 ## iOS
 
 Add the following in `ios/Runner/info.plist`:

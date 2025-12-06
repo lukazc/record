@@ -79,7 +79,11 @@ class AndroidRecordConfig {
 
 /// Background service parameters
 class AndroidService {
-  const AndroidService({required this.title, this.content});
+  const AndroidService({
+    required this.title,
+    this.content,
+    this.openAppOnTap = true,
+  });
 
   /// Main text
   final String title;
@@ -87,11 +91,17 @@ class AndroidService {
   /// Description text
   final String? content;
 
+  /// If [true], tapping the notification will open/foreground the app.
+  ///
+  /// Defaults to [true].
+  final bool openAppOnTap;
+
   /// Transforms model to JSON map.
   Map<String, dynamic> toMap() {
     return {
       'title': title,
       'content': content,
+      'openAppOnTap': openAppOnTap,
     };
   }
 }
