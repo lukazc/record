@@ -195,6 +195,7 @@ class RecorderWrapper(
       val intent = Intent(context, AudioRecordingService::class.java)
       intent.putExtra("title", config.service.title)
       intent.putExtra("content", config.service.content)
+      intent.putExtra("openAppOnTap", config.service.openAppOnTap)
       context.startService(intent)
 
       Intent(context, AudioRecordingService::class.java).also { intent ->

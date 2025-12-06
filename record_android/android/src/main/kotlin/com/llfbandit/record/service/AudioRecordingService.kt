@@ -3,6 +3,7 @@ package com.llfbandit.record.service
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
@@ -51,7 +52,8 @@ class AudioRecordingService : Service() {
     if (intent?.action == null) {
       val notification = createNotification(
         intent?.getStringExtra("title"),
-        intent?.getStringExtra("content")
+        intent?.getStringExtra("content"),
+        intent?.getBooleanExtra("openAppOnTap", true) ?: true
       )
       startForeground(NOTIFICATION_ID, notification)
 
@@ -72,14 +74,46 @@ class AudioRecordingService : Service() {
     }
   }
 
-  private fun createNotification(title: String?, content: String?): Notification {
-    return NotificationCompat.Builder(this, CHANNEL_ID)
+  private fun createNotification(title: String?, content: String?, openAppOnTap: Boolean): Notification {
+    val builder = NotificationCompat.Builder(this, CHANNEL_ID)
       .setContentTitle(title ?: DEFAULT_TITLE)
       .setContentText(content)
       .setSmallIcon(R.drawable.ic_mic)
       .setSilent(true)
       .setOngoing(true)
       .setVisibility(VISIBILITY_PUBLIC)
-      .build()
+
+    if (openAppOnTap) {
+      val pendingIntent = createPendingIntent()
+      if (pendingIntent != null) {
+        builder.setContentIntent(pendingIntent)
+      }
+    }
+
+    return builder.build()
+  }
+
+  private fun createPendingIntent(): PendingIntent? {
+    val packageManager = applicationContext.packageManager
+    val launchIntent = packageManager.getLaunchIntentForPackage(applicationContext.packageName)
+    
+    return if (launchIntent != null) {
+      launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+      
+      val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+      } else {
+        PendingIntent.FLAG_UPDATE_CURRENT
+      }
+      
+      PendingIntent.getActivity(
+        applicationContext,
+        0,
+        launchIntent,
+        flags
+      )
+    } else {
+      null
+    }
   }
 }
