@@ -1,3 +1,9 @@
+## Upcoming
+* feat: Add `request` parameter to `hasPermission()` method to check permission status without requesting.
+
+## 1.1.5
+* fix: Clamp to supported sample rates for Opus.
+
 ## 1.1.4
 * fix: Wrong deprecation on allowBluetooth on XCode 26.0.
 

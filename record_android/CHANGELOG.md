@@ -1,3 +1,9 @@
+## Upcoming
+* feat: Add `request` parameter to `hasPermission()` method to check permission status without requesting.
+
+## 1.4.5
+* fix: WAVE header for files larger than 2GB.
+
 ## 1.4.4
 * fix: crash when notify a notification with a background service on devices below Android 8.0.
 * fix: Update build config.
