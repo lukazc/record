@@ -1,4 +1,4 @@
-## Upcoming
+## 6.2.0
 * feat: Add `request` parameter to `hasPermission()` method to check permission status without requesting.
 
 ## 6.1.2
