@@ -125,6 +125,17 @@ namespace record_windows {
 				result = 0;
 			}
 			break;
+		case WM_CLOSE:
+		case WM_DESTROY:
+			// When app is being closed, stop all recordings to ensure data is saved to disk
+			for (const auto& [recorderId, recorder] : m_recorders)
+			{
+				if (recorder->IsRecording())
+				{
+					recorder->Stop();
+				}
+			}
+			break;
 		}
 		return result;
 	}

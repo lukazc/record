@@ -21,10 +21,37 @@ public class RecordMacOsPlugin: NSObject, FlutterPlugin {
   
   init(binaryMessenger: FlutterBinaryMessenger) {
     self.m_binaryMessenger = binaryMessenger
+    super.init()
+    
+    // Register for application termination notification to save recordings
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(applicationWillTerminate),
+      name: NSApplication.willTerminateNotification,
+      object: nil
+    )
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
+  @objc private func applicationWillTerminate(_ notification: Notification) {
+    // Stop all active recordings to ensure data is saved to disk
+    stopAllRecordings()
   }
 
   public func detachFromEngine(for registrar: FlutterPluginRegistrar) {
     dispose()
+  }
+  
+  // Stops all active recordings to ensure data is saved to disk
+  private func stopAllRecordings() {
+    for (_, recorder) in m_recorders {
+      if recorder.isRecording() {
+        recorder.stop(completionHandler: {(path) -> () in })
+      }
+    }
   }
 
   func dispose() {
